@@ -5,7 +5,7 @@ import { blockInclusion, votingPeriod } from "../helpers/const";
 import { VoteOption } from "@furyahub/furya.proto/cosmos/gov/v1beta1/gov";
 import { Height } from "@furyahub/feather.js/dist/core/ibc/core/client/Height";
 
-describe("Alliance Module (https://github.com/furyahub/alliance/tree/release/v0.3.x) ", () => {
+describe("Alliance Module (https://github.com/terra-money/alliance/tree/release/v0.3.x) ", () => {
     // Prepare environment clients, accounts and wallets
     const LCD = getLCDClient();
     const accounts = getMnemonics();

@@ -9,7 +9,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	customalliancemod "github.com/furyahub/alliance/custom/bank"
+	customalliancemod "github.com/terra-money/alliance/custom/bank"
 	custombankkeeper "github.com/furyahub/core/v2/custom/bank/keeper"
 )
 

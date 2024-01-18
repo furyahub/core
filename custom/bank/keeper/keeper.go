@@ -8,7 +8,7 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	custombankkeeper "github.com/furyahub/alliance/custom/bank/keeper"
+	custombankkeeper "github.com/terra-money/alliance/custom/bank/keeper"
 	customfuryatypes "github.com/furyahub/core/v2/custom/bank/types"
 )
 

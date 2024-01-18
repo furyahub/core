@@ -1,15 +1,15 @@
 import { getMnemonics } from "../helpers/mnemonics";
 import { getLCDClient } from "../helpers/lcd.connection";
-import { Coins, MsgVote, Fee, MsgSubmitProposal, Proposal, Int } from "@terra-money/feather.js";
+import { Coins, MsgVote, Fee, MsgSubmitProposal, Proposal, Int } from "@furyahub/feather.js";
 import { blockInclusion, votingPeriod } from "../helpers/const";
-import { ProposalStatus, VoteOption } from "@terra-money/terra.proto/cosmos/gov/v1beta1/gov";
+import { ProposalStatus, VoteOption } from "@furyahub/furya.proto/cosmos/gov/v1beta1/gov";
 
-describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/release/v0.47.x/x/gov) ", () => {
+describe("Governance Module (https://github.com/furyahub/cosmos-sdk/tree/release/v0.47.x/x/gov) ", () => {
     // Prepare environment clients, accounts and wallets
     const LCD = getLCDClient();
     const accounts = getMnemonics();
     const val2Wallet = LCD.chain2.wallet(accounts.val2);
-    const val2WalletAddress = val2Wallet.key.accAddress("terra");
+    const val2WalletAddress = val2Wallet.key.accAddress("furya");
     let proposalId = 0; // Will be populated on "Must submit a proposal on chain"
 
     test('Must contain the expected module params', async () => {
@@ -24,7 +24,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                         "min_deposit": [
                             {
                                 "amount": "10000000",
-                                "denom": "uluna",
+                                "denom": "ufury",
                             },
                         ],
                     },
@@ -43,7 +43,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                         "max_deposit_period": "172800s",
                         "min_deposit": [{
                             "amount": "10000000",
-                            "denom": "uluna",
+                            "denom": "ufury",
                         }],
                         "min_initial_deposit_ratio": "0.000000000000000000",
                         "quorum": "0.334000000000000000",
@@ -72,7 +72,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                         "max_deposit_period": "172800s",
                         "min_deposit": [{
                             "amount": "10000000",
-                            "denom": "uluna",
+                            "denom": "ufury",
                         }],
                         "min_initial_deposit_ratio": "0.000000000000000000",
                         "quorum": "0.334000000000000000",
@@ -99,7 +99,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                         "max_deposit_period": "172800s",
                         "min_deposit": [{
                             "amount": "10000000",
-                            "denom": "uluna",
+                            "denom": "ufury",
                         }],
                         "min_initial_deposit_ratio": "0.000000000000000000",
                         "quorum": "0.334000000000000000",
@@ -122,7 +122,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                         "min_deposit": [
                             {
                                 "amount": "10000000",
-                                "denom": "uluna",
+                                "denom": "ufury",
                             },
                         ],
                     },
@@ -133,7 +133,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                         "max_deposit_period": "172800s",
                         "min_deposit": [{
                             "amount": "10000000",
-                            "denom": "uluna",
+                            "denom": "ufury",
                         }],
                         "min_initial_deposit_ratio": "0.000000000000000000",
                         "quorum": "0.334000000000000000",
@@ -153,7 +153,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
         try {
             const msgProposal = new MsgSubmitProposal(
                 [],
-                Coins.fromString("1000000000uluna"),
+                Coins.fromString("1000000000ufury"),
                 val2WalletAddress,
                 "metadata",
                 "title",
@@ -182,7 +182,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
                     val2WalletAddress,
                     VoteOption.VOTE_OPTION_YES
                 )],
-                fee: new Fee(100_000, "0uluna"),
+                fee: new Fee(100_000, "0ufury"),
                 chainID: "test-2",
             });
             result = await LCD.chain2.tx.broadcastSync(tx, "test-2");
@@ -217,7 +217,7 @@ describe("Governance Module (https://github.com/terra-money/cosmos-sdk/tree/rele
             expect(proposal.title).toBe("title");
             expect(proposal.summary).toBe("summary");
             expect(proposal.messages.length).toBe(0);
-            expect(proposal.total_deposit).toStrictEqual(Coins.fromString("1000000000uluna"));
+            expect(proposal.total_deposit).toStrictEqual(Coins.fromString("1000000000ufury"));
             expect(proposal.submit_time.getTime()).toBeLessThan(Date.now());
             expect(proposal.voting_start_time?.getTime()).toBeLessThan(Date.now());
             expect(proposal.deposit_end_time?.getTime()).toBeGreaterThan(Date.now());

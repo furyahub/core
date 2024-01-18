@@ -6,7 +6,7 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	tokenfactorykeeper "github.com/terra-money/core/v2/x/tokenfactory/keeper"
+	tokenfactorykeeper "github.com/furyahub/core/v2/x/tokenfactory/keeper"
 )
 
 func RegisterCustomPlugins(

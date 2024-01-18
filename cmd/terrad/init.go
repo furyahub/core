@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	terraappconfig "github.com/terra-money/core/v2/app/config"
+	furyaappconfig "github.com/furyahub/core/v2/app/config"
 
 	cfg "github.com/cometbft/cometbft/config"
 	"github.com/cometbft/cometbft/libs/cli"
@@ -26,7 +26,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 
-	terraapp "github.com/terra-money/core/v2/app"
+	furyaapp "github.com/furyahub/core/v2/app"
 )
 
 const (
@@ -127,8 +127,8 @@ func InitCmd(mbm module.BasicManager, defaultNodeHome string) *cobra.Command {
 			}
 
 			appState, err := json.MarshalIndent(
-				terraapp.GenesisState(mbm.DefaultGenesis(cdc)).
-					ConfigureBondDenom(cdc, terraappconfig.BondDenom).
+				furyaapp.GenesisState(mbm.DefaultGenesis(cdc)).
+					ConfigureBondDenom(cdc, furyaappconfig.BondDenom).
 					ConfigureICA(cdc), "", " ",
 			)
 			if err != nil {

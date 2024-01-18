@@ -10,7 +10,7 @@ import (
 
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 
-	"github.com/terra-money/core/v2/app/rpc"
+	"github.com/furyahub/core/v2/app/rpc"
 
 	dbm "github.com/cometbft/cometbft-db"
 	abci "github.com/cometbft/cometbft/abci/types"
@@ -135,20 +135,20 @@ import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/terra-money/core/v2/x/tokenfactory"
-	tokenfactorybindings "github.com/terra-money/core/v2/x/tokenfactory/bindings"
-	tokenfactorykeeper "github.com/terra-money/core/v2/x/tokenfactory/keeper"
-	tokenfactorytypes "github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/x/tokenfactory"
+	tokenfactorybindings "github.com/furyahub/core/v2/x/tokenfactory/bindings"
+	tokenfactorykeeper "github.com/furyahub/core/v2/x/tokenfactory/keeper"
+	tokenfactorytypes "github.com/furyahub/core/v2/x/tokenfactory/types"
 
-	"github.com/terra-money/alliance/x/alliance"
-	allianceclient "github.com/terra-money/alliance/x/alliance/client"
-	alliancekeeper "github.com/terra-money/alliance/x/alliance/keeper"
-	alliancetypes "github.com/terra-money/alliance/x/alliance/types"
-	terracustombank "github.com/terra-money/core/v2/custom/bank"
-	custombankkeeper "github.com/terra-money/core/v2/custom/bank/keeper"
-	feeshare "github.com/terra-money/core/v2/x/feeshare"
-	feesharekeeper "github.com/terra-money/core/v2/x/feeshare/keeper"
-	feesharetypes "github.com/terra-money/core/v2/x/feeshare/types"
+	"github.com/furyahub/alliance/x/alliance"
+	allianceclient "github.com/furyahub/alliance/x/alliance/client"
+	alliancekeeper "github.com/furyahub/alliance/x/alliance/keeper"
+	alliancetypes "github.com/furyahub/alliance/x/alliance/types"
+	furyacustombank "github.com/furyahub/core/v2/custom/bank"
+	custombankkeeper "github.com/furyahub/core/v2/custom/bank/keeper"
+	feeshare "github.com/furyahub/core/v2/x/feeshare"
+	feesharekeeper "github.com/furyahub/core/v2/x/feeshare/keeper"
+	feesharetypes "github.com/furyahub/core/v2/x/feeshare/types"
 
 	pobabci "github.com/skip-mev/pob/abci"
 	pobmempool "github.com/skip-mev/pob/mempool"
@@ -158,23 +158,23 @@ import (
 
 	tmjson "github.com/cometbft/cometbft/libs/json"
 
-	"github.com/terra-money/core/v2/app/ante"
-	terraappconfig "github.com/terra-money/core/v2/app/config"
-	terraappparams "github.com/terra-money/core/v2/app/params"
-	"github.com/terra-money/core/v2/app/wasmconfig"
+	"github.com/furyahub/core/v2/app/ante"
+	furyaappconfig "github.com/furyahub/core/v2/app/config"
+	furyaappparams "github.com/furyahub/core/v2/app/params"
+	"github.com/furyahub/core/v2/app/wasmconfig"
 
-	v2_2_0 "github.com/terra-money/core/v2/app/upgrades/v2.2.0"
-	v2_3_0 "github.com/terra-money/core/v2/app/upgrades/v2.3.0"
-	v2_4 "github.com/terra-money/core/v2/app/upgrades/v2.4"
-	v2_5 "github.com/terra-money/core/v2/app/upgrades/v2.5"
-	v2_6 "github.com/terra-money/core/v2/app/upgrades/v2.6"
+	v2_2_0 "github.com/furyahub/core/v2/app/upgrades/v2.2.0"
+	v2_3_0 "github.com/furyahub/core/v2/app/upgrades/v2.3.0"
+	v2_4 "github.com/furyahub/core/v2/app/upgrades/v2.4"
+	v2_5 "github.com/furyahub/core/v2/app/upgrades/v2.5"
+	v2_6 "github.com/furyahub/core/v2/app/upgrades/v2.6"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/terra-money/core/v2/client/docs/statik"
+	_ "github.com/furyahub/core/v2/client/docs/statik"
 )
 
 // GetWasmOpts build wasm options
-func GetWasmOpts(app *TerraApp, appOpts servertypes.AppOptions) []wasmkeeper.Option {
+func GetWasmOpts(app *FuryaApp, appOpts servertypes.AppOptions) []wasmkeeper.Option {
 	var wasmOpts []wasmkeeper.Option
 	if cast.ToBool(appOpts.Get("telemetry.enabled")) {
 		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
@@ -261,7 +261,7 @@ var (
 )
 
 var (
-	_ servertypes.Application = (*TerraApp)(nil)
+	_ servertypes.Application = (*FuryaApp)(nil)
 )
 
 func init() {
@@ -270,13 +270,13 @@ func init() {
 		panic(err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, "."+terraappconfig.AppName)
+	DefaultNodeHome = filepath.Join(userHomeDir, "."+furyaappconfig.AppName)
 }
 
-// TerraApp extends an ABCI application, but with most of its parameters exported.
+// FuryaApp extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
 // capabilities aren't needed for testing.
-type TerraApp struct {
+type FuryaApp struct {
 	*baseapp.BaseApp
 
 	cdc               *codec.LegacyAmino
@@ -344,20 +344,20 @@ type TerraApp struct {
 	configurator module.Configurator
 }
 
-func (app TerraApp) GetAppCodec() codec.Codec {
+func (app FuryaApp) GetAppCodec() codec.Codec {
 	return app.appCodec
 }
 
-func (app TerraApp) GetConfigurator() module.Configurator {
+func (app FuryaApp) GetConfigurator() module.Configurator {
 	return app.configurator
 }
 
-func (app TerraApp) GetModuleManager() *module.Manager {
+func (app FuryaApp) GetModuleManager() *module.Manager {
 	return app.mm
 }
 
-// NewTerraApp returns a reference to an initialized Terra.
-func NewTerraApp(
+// NewFuryaApp returns a reference to an initialized Furya.
+func NewFuryaApp(
 	logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,
@@ -365,16 +365,16 @@ func NewTerraApp(
 	skipUpgradeHeights map[int64]bool,
 	homePath string,
 	invCheckPeriod uint,
-	encodingConfig terraappparams.EncodingConfig,
+	encodingConfig furyaappparams.EncodingConfig,
 	appOpts servertypes.AppOptions,
 	wasmConfig *wasmconfig.Config,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *TerraApp {
+) *FuryaApp {
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
 
-	bApp := baseapp.NewBaseApp(terraappconfig.AppName, logger, db, encodingConfig.TxConfig.TxDecoder(), baseAppOptions...)
+	bApp := baseapp.NewBaseApp(furyaappconfig.AppName, logger, db, encodingConfig.TxConfig.TxDecoder(), baseAppOptions...)
 	bApp.SetCommitMultiStoreTracer(traceStore)
 	bApp.SetVersion(version.Version)
 	bApp.SetInterfaceRegistry(interfaceRegistry)
@@ -393,7 +393,7 @@ func NewTerraApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
 
-	app := &TerraApp{
+	app := &FuryaApp{
 		BaseApp:           bApp,
 		cdc:               cdc,
 		appCodec:          appCodec,
@@ -430,7 +430,7 @@ func NewTerraApp(
 		keys[authtypes.StoreKey],
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		terraappconfig.AccountAddressPrefix,
+		furyaappconfig.AccountAddressPrefix,
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 	app.BankKeeper = custombankkeeper.NewBaseKeeper(
@@ -551,7 +551,7 @@ func NewTerraApp(
 		keys[ibchookstypes.StoreKey],
 	)
 	app.IBCHooksKeeper = &hooksKeeper
-	wasmHooks := ibchooks.NewWasmHooks(&hooksKeeper, nil, terraappconfig.AccountAddressPrefix) // The contract keeper needs to be set later
+	wasmHooks := ibchooks.NewWasmHooks(&hooksKeeper, nil, furyaappconfig.AccountAddressPrefix) // The contract keeper needs to be set later
 	app.Ics20WasmHooks = &wasmHooks
 	app.HooksICS4Wrapper = ibchooks.NewICS4Middleware(
 		app.IBCKeeper.ChannelKeeper,
@@ -729,7 +729,7 @@ func NewTerraApp(
 		),
 		auth.NewAppModule(appCodec, app.AccountKeeper, nil, app.GetSubspace(authtypes.ModuleName)),
 		vesting.NewAppModule(app.AccountKeeper, app.BankKeeper, app.DistrKeeper, app.StakingKeeper),
-		terracustombank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper, app.GetSubspace(banktypes.ModuleName)),
+		furyacustombank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper, app.GetSubspace(banktypes.ModuleName)),
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper, false),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants, app.GetSubspace(crisistypes.ModuleName)),
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
@@ -932,7 +932,7 @@ func NewTerraApp(
 	}
 
 	// Add stores for new modules
-	if upgradeInfo.Name == terraappconfig.Upgrade2_3_0 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	if upgradeInfo.Name == furyaappconfig.Upgrade2_3_0 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{
 				icacontrollertypes.StoreKey,
@@ -943,7 +943,7 @@ func NewTerraApp(
 			},
 		}
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
-	} else if upgradeInfo.Name == terraappconfig.Upgrade2_5 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	} else if upgradeInfo.Name == furyaappconfig.Upgrade2_5 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{
 				consensusparamtypes.StoreKey,
@@ -959,7 +959,7 @@ func NewTerraApp(
 			},
 		}
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
-	} else if upgradeInfo.Name == terraappconfig.Upgrade2_6 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	} else if upgradeInfo.Name == furyaappconfig.Upgrade2_6 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Added: []string{
 				feesharetypes.StoreKey,
@@ -993,20 +993,20 @@ func NewTerraApp(
 }
 
 // Name returns the name of the App
-func (app *TerraApp) Name() string { return app.BaseApp.Name() }
+func (app *FuryaApp) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker application updates every begin block
-func (app *TerraApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *FuryaApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
-func (app *TerraApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *FuryaApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
-func (app *TerraApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *FuryaApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
@@ -1021,12 +1021,12 @@ func (app *TerraApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abc
 }
 
 // LoadHeight loads a particular height
-func (app *TerraApp) LoadHeight(height int64) error {
+func (app *FuryaApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *TerraApp) ModuleAccountAddrs() map[string]bool {
+func (app *FuryaApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 
 	/* #nosec */
@@ -1043,48 +1043,48 @@ func (app *TerraApp) ModuleAccountAddrs() map[string]bool {
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *TerraApp) LegacyAmino() *codec.LegacyAmino {
+func (app *FuryaApp) LegacyAmino() *codec.LegacyAmino {
 	return app.cdc
 }
 
-// AppCodec returns Terra's app codec.
+// AppCodec returns Furya's app codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *TerraApp) AppCodec() codec.Codec {
+func (app *FuryaApp) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
-// InterfaceRegistry returns Terra's InterfaceRegistry
-func (app *TerraApp) InterfaceRegistry() types.InterfaceRegistry {
+// InterfaceRegistry returns Furya's InterfaceRegistry
+func (app *FuryaApp) InterfaceRegistry() types.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
 // GetKey returns the KVStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *TerraApp) GetKey(storeKey string) *storetypes.KVStoreKey {
+func (app *FuryaApp) GetKey(storeKey string) *storetypes.KVStoreKey {
 	return app.keys[storeKey]
 }
 
 // GetTKey returns the TransientStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *TerraApp) GetTKey(storeKey string) *storetypes.TransientStoreKey {
+func (app *FuryaApp) GetTKey(storeKey string) *storetypes.TransientStoreKey {
 	return app.tkeys[storeKey]
 }
 
 // GetMemKey returns the MemStoreKey for the provided mem key.
 //
 // NOTE: This is solely used for testing purposes.
-func (app *TerraApp) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
+func (app *FuryaApp) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
 
 // GetSubspace returns a param subspace for a given module name.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *TerraApp) GetSubspace(moduleName string) paramstypes.Subspace {
+func (app *FuryaApp) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, found := app.ParamsKeeper.GetSubspace(moduleName)
 	if !found {
 		panic("Module with '" + moduleName + "' name does not exist")
@@ -1095,7 +1095,7 @@ func (app *TerraApp) GetSubspace(moduleName string) paramstypes.Subspace {
 
 // RegisterAPIRoutes registers all application module routes with the provided
 // API server.
-func (app *TerraApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
+func (app *FuryaApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
 
 	rpc.RegisterHealthcheckRoute(clientCtx, apiSvr.Router)
@@ -1115,12 +1115,12 @@ func (app *TerraApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIC
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
-func (app *TerraApp) RegisterTxService(clientCtx client.Context) {
+func (app *FuryaApp) RegisterTxService(clientCtx client.Context) {
 	authtx.RegisterTxService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
-func (app *TerraApp) RegisterTendermintService(clientCtx client.Context) {
+func (app *FuryaApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(
 		clientCtx,
 		app.BaseApp.GRPCQueryRouter(),
@@ -1130,26 +1130,26 @@ func (app *TerraApp) RegisterTendermintService(clientCtx client.Context) {
 }
 
 // RegisterUpgradeHandlers returns upgrade handlers
-func (app *TerraApp) RegisterUpgradeHandlers(cfg module.Configurator) {
+func (app *FuryaApp) RegisterUpgradeHandlers(cfg module.Configurator) {
 	app.UpgradeKeeper.SetUpgradeHandler(
-		terraappconfig.Upgrade2_2_0,
+		furyaappconfig.Upgrade2_2_0,
 		v2_2_0.CreateUpgradeHandler(app.mm, app.configurator),
 	)
 	app.UpgradeKeeper.SetUpgradeHandler(
-		terraappconfig.Upgrade2_3_0,
+		furyaappconfig.Upgrade2_3_0,
 		v2_3_0.CreateUpgradeHandler(app.mm, app.configurator, app.TokenFactoryKeeper),
 	)
 	// This is pisco only since an incorrect plan name was used for the upgrade
 	app.UpgradeKeeper.SetUpgradeHandler(
-		terraappconfig.Upgrade2_4_rc,
+		furyaappconfig.Upgrade2_4_rc,
 		v2_4.CreateUpgradeHandler(app.mm, app.configurator),
 	)
 	app.UpgradeKeeper.SetUpgradeHandler(
-		terraappconfig.Upgrade2_4,
+		furyaappconfig.Upgrade2_4,
 		v2_4.CreateUpgradeHandler(app.mm, app.configurator),
 	)
 	app.UpgradeKeeper.SetUpgradeHandler(
-		terraappconfig.Upgrade2_5,
+		furyaappconfig.Upgrade2_5,
 		v2_5.CreateUpgradeHandler(app.mm,
 			app.configurator,
 			app.appCodec,
@@ -1162,7 +1162,7 @@ func (app *TerraApp) RegisterUpgradeHandlers(cfg module.Configurator) {
 		),
 	)
 	app.UpgradeKeeper.SetUpgradeHandler(
-		terraappconfig.Upgrade2_6,
+		furyaappconfig.Upgrade2_6,
 		v2_6.CreateUpgradeHandler(app.mm,
 			app.configurator,
 			app.appCodec,
@@ -1221,7 +1221,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 
 // enforceStakingForVestingTokens enforce vesting tokens to be staked
 // CONTRACT: validator's gentx account must not be a vesting account
-func (app *TerraApp) enforceStakingForVestingTokens(ctx sdk.Context, genesisState GenesisState) {
+func (app *FuryaApp) enforceStakingForVestingTokens(ctx sdk.Context, genesisState GenesisState) {
 
 	var authState authtypes.GenesisState
 	app.appCodec.MustUnmarshalJSON(genesisState[authtypes.ModuleName], &authState)
@@ -1294,7 +1294,7 @@ func (app *TerraApp) enforceStakingForVestingTokens(ctx sdk.Context, genesisStat
 	}
 }
 
-func (app *TerraApp) SimulationManager() *module.SimulationManager {
+func (app *FuryaApp) SimulationManager() *module.SimulationManager {
 	appCodec := app.appCodec
 	// create the simulation manager and define the order of the modules for deterministic simulations
 	sm := module.NewSimulationManager(
@@ -1325,17 +1325,17 @@ func (app *TerraApp) SimulationManager() *module.SimulationManager {
 }
 
 // DefaultGenesis returns a default genesis from the registered AppModuleBasic's.
-func (a *TerraApp) DefaultGenesis() map[string]json.RawMessage {
+func (a *FuryaApp) DefaultGenesis() map[string]json.RawMessage {
 	return a.basicManager.DefaultGenesis(a.appCodec)
 }
 
-func (app *TerraApp) RegisterNodeService(clientCtx client.Context) {
+func (app *FuryaApp) RegisterNodeService(clientCtx client.Context) {
 	nodeservice.RegisterNodeService(clientCtx, app.GRPCQueryRouter())
 }
 
 // ChainID gets chainID from private fields of BaseApp
 // Should be removed once SDK 0.50.x will be adopted
-func (app *TerraApp) ChainID() string {
+func (app *FuryaApp) ChainID() string {
 	field := reflect.ValueOf(app.BaseApp).Elem().FieldByName("chainID")
 	return field.String()
 }
@@ -1344,11 +1344,11 @@ func (app *TerraApp) ChainID() string {
 // handler so that we can verify bid transactions before they are inserted into the mempool.
 // With the POB CheckTx, we can verify the bid transaction and all of the bundled transactions
 // before inserting the bid transaction into the mempool.
-func (app *TerraApp) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
+func (app *FuryaApp) CheckTx(req abci.RequestCheckTx) abci.ResponseCheckTx {
 	return app.checkTxHandler(req)
 }
 
 // SetCheckTx sets the checkTxHandler for the app.
-func (app *TerraApp) SetCheckTx(handler pobabci.CheckTx) {
+func (app *FuryaApp) SetCheckTx(handler pobabci.CheckTx) {
 	app.checkTxHandler = handler
 }

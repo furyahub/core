@@ -1,4 +1,4 @@
-module github.com/terra-money/core/v2
+module github.com/furyahub/core/v2
 
 go 1.20
 
@@ -29,7 +29,7 @@ require (
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.8.4
-	github.com/terra-money/alliance v0.3.2
+	github.com/furyahub/alliance v0.3.2
 	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e
 	google.golang.org/grpc v1.57.0
 )
@@ -187,9 +187,9 @@ require (
 replace (
 	// This is a temporary fix since the latest version updated some function signatures. To remove when updating to cosmos 47
 	github.com/ChainSafe/go-schnorrkel => github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d
-	github.com/CosmWasm/wasmd => github.com/terra-money/wasmd v0.43.0-terra
-	github.com/cosmos/cosmos-sdk => github.com/terra-money/cosmos-sdk v0.47.5-terra.2
-	github.com/cosmos/ledger-cosmos-go => github.com/terra-money/ledger-terra-go v0.11.2
+	github.com/CosmWasm/wasmd => github.com/furyahub/wasmd v0.43.0-furya
+	github.com/cosmos/cosmos-sdk => github.com/furyahub/cosmos-sdk v0.47.5-furya.2
+	github.com/cosmos/ledger-cosmos-go => github.com/furyahub/ledger-furya-go v0.11.2
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )

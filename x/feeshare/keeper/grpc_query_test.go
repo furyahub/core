@@ -3,7 +3,7 @@ package keeper_test
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/terra-money/core/v2/x/feeshare/types"
+	"github.com/furyahub/core/v2/x/feeshare/types"
 )
 
 func (s *IntegrationTestSuite) TestFeeShares() {

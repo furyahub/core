@@ -31,15 +31,15 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 
-	terraapp "github.com/terra-money/core/v2/app"
-	"github.com/terra-money/core/v2/app/params"
-	"github.com/terra-money/core/v2/app/wasmconfig"
+	furyaapp "github.com/furyahub/core/v2/app"
+	"github.com/furyahub/core/v2/app/params"
+	"github.com/furyahub/core/v2/app/wasmconfig"
 )
 
-// NewRootCmd creates a new root command for terrad.
+// NewRootCmd creates a new root command for furyad.
 // It is called once in the main function.
 func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
-	encodingConfig := terraapp.MakeEncodingConfig()
+	encodingConfig := furyaapp.MakeEncodingConfig()
 	err := params.RegisterDenomsConfig()
 	if err != nil {
 		panic(err)
@@ -54,12 +54,12 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithLegacyAmino(encodingConfig.Amino).
 		WithInput(os.Stdin).
 		WithAccountRetriever(types.AccountRetriever{}).
-		WithHomeDir(terraapp.DefaultNodeHome).
-		WithViper("TERRA")
+		WithHomeDir(furyaapp.DefaultNodeHome).
+		WithViper("FURYA")
 
 	rootCmd := &cobra.Command{
-		Use:   "terrad",
-		Short: "Terra Core App (https://www.terra.money)",
+		Use:   "furyad",
+		Short: "Furya Core App (https://www.furya.money)",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
@@ -82,14 +82,14 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 				return err
 			}
 
-			terraAppTemplate, terraAppConfig := initAppConfig()
+			furyaAppTemplate, furyaAppConfig := initAppConfig()
 			customTMConfig := initTendermintConfig()
 
-			return server.InterceptConfigsPreRunHandler(cmd, terraAppTemplate, terraAppConfig, customTMConfig)
+			return server.InterceptConfigsPreRunHandler(cmd, furyaAppTemplate, furyaAppConfig, customTMConfig)
 		},
 	}
 
-	initRootCmd(rootCmd, terraapp.ModuleBasics, encodingConfig)
+	initRootCmd(rootCmd, furyaapp.ModuleBasics, encodingConfig)
 
 	return rootCmd, encodingConfig
 }
@@ -110,15 +110,15 @@ func initRootCmd(rootCmd *cobra.Command, moduleBasics module.BasicManager, encod
 	a := appCreator{encodingConfig}
 
 	rootCmd.AddCommand(
-		InitCmd(terraapp.ModuleBasics, terraapp.DefaultNodeHome),
+		InitCmd(furyaapp.ModuleBasics, furyaapp.DefaultNodeHome),
 		config.Cmd(),
 		tmcli.NewCompletionCmd(rootCmd, true),
 		debug.Cmd(),
-		pruning.Cmd(a.newApp, terraapp.DefaultNodeHome),
+		pruning.Cmd(a.newApp, furyaapp.DefaultNodeHome),
 		snapshot.Cmd(a.newApp),
 	)
 
-	server.AddCommands(rootCmd, terraapp.DefaultNodeHome, a.newApp, a.appExport, addModuleInitFlags)
+	server.AddCommands(rootCmd, furyaapp.DefaultNodeHome, a.newApp, a.appExport, addModuleInitFlags)
 
 	// add keybase, auxiliary RPC, query, and tx child commands
 	rootCmd.AddCommand(
@@ -126,16 +126,16 @@ func initRootCmd(rootCmd *cobra.Command, moduleBasics module.BasicManager, encod
 		genesisCommand(encodingConfig),
 		queryCommand(),
 		txCommand(),
-		keys.Commands(terraapp.DefaultNodeHome),
+		keys.Commands(furyaapp.DefaultNodeHome),
 	)
 
 	// add rosetta commands
 	rootCmd.AddCommand(rosettaCmd.RosettaCommand(encodingConfig.InterfaceRegistry, encodingConfig.Marshaler))
 }
 
-// genesisCommand builds genesis-related `terrad genesis` command. Users may provide application specific commands as a parameter
+// genesisCommand builds genesis-related `furyad genesis` command. Users may provide application specific commands as a parameter
 func genesisCommand(encodingConfig params.EncodingConfig, cmds ...*cobra.Command) *cobra.Command {
-	cmd := genutilcli.GenesisCoreCommand(encodingConfig.TxConfig, terraapp.ModuleBasics, terraapp.DefaultNodeHome)
+	cmd := genutilcli.GenesisCoreCommand(encodingConfig.TxConfig, furyaapp.ModuleBasics, furyaapp.DefaultNodeHome)
 
 	for _, sub_cmd := range cmds {
 		cmd.AddCommand(sub_cmd)
@@ -166,7 +166,7 @@ func queryCommand() *cobra.Command {
 		authcmd.QueryTxCmd(),
 	)
 
-	terraapp.ModuleBasics.AddQueryCommands(cmd)
+	furyaapp.ModuleBasics.AddQueryCommands(cmd)
 	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
@@ -195,7 +195,7 @@ func txCommand() *cobra.Command {
 		flags.LineBreak,
 	)
 
-	terraapp.ModuleBasics.AddTxCommands(cmd)
+	furyaapp.ModuleBasics.AddTxCommands(cmd)
 	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
@@ -215,7 +215,7 @@ func (a appCreator) newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, a
 		skipUpgradeHeights[int64(h)] = true
 	}
 
-	return terraapp.NewTerraApp(
+	return furyaapp.NewFuryaApp(
 		logger,
 		db,
 		traceStore,
@@ -249,16 +249,16 @@ func (a appCreator) appExport(
 		return servertypes.ExportedApp{}, errors.New("application home not set")
 	}
 
-	var terraApp *terraapp.TerraApp
+	var furyaApp *furyaapp.FuryaApp
 	if height != -1 {
-		terraApp = terraapp.NewTerraApp(logger, db, traceStore, false, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), a.encodingConfig, appOpts, wasmconfig.DefaultConfig())
+		furyaApp = furyaapp.NewFuryaApp(logger, db, traceStore, false, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), a.encodingConfig, appOpts, wasmconfig.DefaultConfig())
 
-		if err := terraApp.LoadHeight(height); err != nil {
+		if err := furyaApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		terraApp = terraapp.NewTerraApp(logger, db, traceStore, true, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), a.encodingConfig, appOpts, wasmconfig.DefaultConfig())
+		furyaApp = furyaapp.NewFuryaApp(logger, db, traceStore, true, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), a.encodingConfig, appOpts, wasmconfig.DefaultConfig())
 	}
 
-	return terraApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
+	return furyaApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
 }

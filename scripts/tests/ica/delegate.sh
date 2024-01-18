@@ -6,7 +6,7 @@ echo "# ICA Cross Chain Delegation to Validator #"
 echo "###########################################"
 echo ""
 
-BINARY=terrad
+BINARY=furyad
 CHAIN_DIR=$(pwd)/data
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/test-1)
@@ -24,7 +24,7 @@ while [[ "$ICS_TX_ERROR" == "$ICS_TX_RESULT"* ]]; do
 done
 
 echo "Sending tokens to ICA on chain test-2"
-$BINARY tx bank send $WALLET_2 $ICS_TX_RESULT 10000000uluna --chain-id test-2 --home $CHAIN_DIR/test-2 --node tcp://localhost:26657 --keyring-backend test -y &> /dev/null
+$BINARY tx bank send $WALLET_2 $ICS_TX_RESULT 10000000ufury --chain-id test-2 --home $CHAIN_DIR/test-2 --node tcp://localhost:26657 --keyring-backend test -y &> /dev/null
 sleep 5
 ICS_ACCOUNT_BALANCE=$($BINARY query bank balances $ICS_TX_RESULT --chain-id test-2 --node tcp://localhost:26657 -o json | jq -r '.balances[0].amount')
 
@@ -41,7 +41,7 @@ GENERATED_PACKET=$($BINARY tx interchain-accounts host generate-packet-data '{
     "delegator_address": "'"$ICS_TX_RESULT"'",
     "validator_address": "'"$VAL_ADDR_1"'",
     "amount": {
-        "denom": "uluna",
+        "denom": "ufury",
         "amount": "'"$ICS_ACCOUNT_BALANCE"'"
     }
 }')

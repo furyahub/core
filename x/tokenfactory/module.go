@@ -23,10 +23,10 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	"github.com/terra-money/core/v2/x/tokenfactory/client/cli"
-	"github.com/terra-money/core/v2/x/tokenfactory/exported"
-	"github.com/terra-money/core/v2/x/tokenfactory/keeper"
-	"github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/x/tokenfactory/client/cli"
+	"github.com/furyahub/core/v2/x/tokenfactory/exported"
+	"github.com/furyahub/core/v2/x/tokenfactory/keeper"
+	"github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
 var (

@@ -6,7 +6,7 @@ echo "# Create, Delete, Mint with Tokenfactory #"
 echo "##########################################"
 echo ""
 
-BINARY=terrad
+BINARY=furyad
 CHAIN_DIR=$(pwd)/data
 TOKEN_DENOM=utoken$RANDOM
 MINT_AMOUNT=1000000

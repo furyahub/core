@@ -3,28 +3,28 @@ package keeper_test
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
 func (s *KeeperTestSuite) TestGenesis() {
 	genesisState := types.GenesisState{
 		FactoryDenoms: []types.GenesisDenom{
 			{
-				Denom: "factory/terra13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5/bitcoin",
+				Denom: "factory/furya13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5/bitcoin",
 				AuthorityMetadata: types.DenomAuthorityMetadata{
-					Admin: "terra13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5",
+					Admin: "furya13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5",
 				},
 			},
 			{
-				Denom: "factory/terra13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5/diff-admin",
+				Denom: "factory/furya13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5/diff-admin",
 				AuthorityMetadata: types.DenomAuthorityMetadata{
-					Admin: "terra16jpsrgl423fqg6n0e9edllew9z0gm7rhl5300u",
+					Admin: "furya16jpsrgl423fqg6n0e9edllew9z0gm7rhl5300u",
 				},
 			},
 			{
-				Denom: "factory/terra13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5/litecoin",
+				Denom: "factory/furya13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5/litecoin",
 				AuthorityMetadata: types.DenomAuthorityMetadata{
-					Admin: "terra13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5",
+					Admin: "furya13s4gwzxv6dycfctvddfuy6r3zm7d6zklynzzj5",
 				},
 			},
 		},

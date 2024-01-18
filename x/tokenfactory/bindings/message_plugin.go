@@ -11,9 +11,9 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
-	bindingstypes "github.com/terra-money/core/v2/x/tokenfactory/bindings/types"
-	tokenfactorykeeper "github.com/terra-money/core/v2/x/tokenfactory/keeper"
-	tokenfactorytypes "github.com/terra-money/core/v2/x/tokenfactory/types"
+	bindingstypes "github.com/furyahub/core/v2/x/tokenfactory/bindings/types"
+	tokenfactorykeeper "github.com/furyahub/core/v2/x/tokenfactory/keeper"
+	tokenfactorytypes "github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
 // CustomMessageDecorator returns decorator for custom CosmWasm bindings messages

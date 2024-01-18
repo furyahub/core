@@ -22,17 +22,17 @@ import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	"github.com/terra-money/core/v2/app"
-	"github.com/terra-money/core/v2/app/wasmconfig"
-	tokenfactorytypes "github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/app"
+	"github.com/furyahub/core/v2/app/wasmconfig"
+	tokenfactorytypes "github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
-func CreateTestInput() (*app.TerraApp, sdk.Context) {
+func CreateTestInput() (*app.FuryaApp, sdk.Context) {
 	encCfg := app.MakeEncodingConfig()
 	genesisState := app.NewDefaultGenesisState(encCfg.Marshaler)
-	genesisState.ConfigureBondDenom(encCfg.Marshaler, "uluna")
+	genesisState.ConfigureBondDenom(encCfg.Marshaler, "ufury")
 	db := dbm.NewMemDB()
-	terraApp := app.NewTerraApp(
+	furyaApp := app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
 		db,
 		nil,
@@ -44,27 +44,27 @@ func CreateTestInput() (*app.TerraApp, sdk.Context) {
 		simtestutil.EmptyAppOptions{},
 		wasmconfig.DefaultConfig(),
 	)
-	ctx := terraApp.BaseApp.NewContext(true, tmproto.Header{Height: 1, ChainID: "phoenix-1", Time: time.Now()})
-	err := terraApp.WasmKeeper.SetParams(ctx, wasmtypes.DefaultParams())
+	ctx := furyaApp.BaseApp.NewContext(true, tmproto.Header{Height: 1, ChainID: "phoenix-1", Time: time.Now()})
+	err := furyaApp.WasmKeeper.SetParams(ctx, wasmtypes.DefaultParams())
 	if err != nil {
 		panic(err)
 	}
-	terraApp.BankKeeper.SetParams(ctx, banktypes.NewParams(true))
+	furyaApp.BankKeeper.SetParams(ctx, banktypes.NewParams(true))
 	if err != nil {
 		panic(err)
 	}
-	terraApp.TokenFactoryKeeper.SetParams(ctx, tokenfactorytypes.DefaultParams())
+	furyaApp.TokenFactoryKeeper.SetParams(ctx, tokenfactorytypes.DefaultParams())
 	if err != nil {
 		panic(err)
 	}
-	terraApp.DistrKeeper.SetFeePool(ctx, distrtypes.InitialFeePool())
+	furyaApp.DistrKeeper.SetFeePool(ctx, distrtypes.InitialFeePool())
 	if err != nil {
 		panic(err)
 	}
-	return terraApp, ctx
+	return furyaApp, ctx
 }
 
-func FundAccount(t *testing.T, ctx sdk.Context, terra *app.TerraApp, acct sdk.AccAddress) {
+func FundAccount(t *testing.T, ctx sdk.Context, furya *app.FuryaApp, acct sdk.AccAddress) {
 	t.Helper()
 }
 
@@ -85,7 +85,7 @@ func RandomBech32AccountAddress() string {
 	return RandomAccountAddress().String()
 }
 
-func storeReflectCode(t *testing.T, ctx sdk.Context, app *app.TerraApp, addr sdk.AccAddress) uint64 {
+func storeReflectCode(t *testing.T, ctx sdk.Context, app *app.FuryaApp, addr sdk.AccAddress) uint64 {
 	t.Helper()
 	wasmCode, err := os.ReadFile("./testdata/token_reflect.wasm")
 	require.NoError(t, err)
@@ -97,7 +97,7 @@ func storeReflectCode(t *testing.T, ctx sdk.Context, app *app.TerraApp, addr sdk
 	return codeID
 }
 
-func instantiateReflectContract(t *testing.T, ctx sdk.Context, app *app.TerraApp, funder sdk.AccAddress) sdk.AccAddress {
+func instantiateReflectContract(t *testing.T, ctx sdk.Context, app *app.FuryaApp, funder sdk.AccAddress) sdk.AccAddress {
 	t.Helper()
 	initMsgBz := []byte("{}")
 	contractKeeper := keeper.NewDefaultPermissionKeeper(app.WasmKeeper)
@@ -108,7 +108,7 @@ func instantiateReflectContract(t *testing.T, ctx sdk.Context, app *app.TerraApp
 	return addr
 }
 
-func fundAccount(t *testing.T, ctx sdk.Context, app *app.TerraApp, addr sdk.AccAddress, coins sdk.Coins) {
+func fundAccount(t *testing.T, ctx sdk.Context, app *app.FuryaApp, addr sdk.AccAddress, coins sdk.Coins) {
 	t.Helper()
 	err := app.BankKeeper.MintCoins(ctx, minttypes.ModuleName, coins)
 	require.NoError(t, err)
@@ -116,7 +116,7 @@ func fundAccount(t *testing.T, ctx sdk.Context, app *app.TerraApp, addr sdk.AccA
 	require.NoError(t, err)
 }
 
-func SetupCustomApp(t *testing.T, addr sdk.AccAddress) (*app.TerraApp, sdk.Context) {
+func SetupCustomApp(t *testing.T, addr sdk.AccAddress) (*app.FuryaApp, sdk.Context) {
 	t.Helper()
 	app, ctx := CreateTestInput()
 

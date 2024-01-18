@@ -12,8 +12,8 @@ import (
 	"github.com/skip-mev/pob/mempool"
 	pobante "github.com/skip-mev/pob/x/builder/ante"
 	pobkeeper "github.com/skip-mev/pob/x/builder/keeper"
-	feeshareante "github.com/terra-money/core/v2/x/feeshare/ante"
-	feesharekeeper "github.com/terra-money/core/v2/x/feeshare/keeper"
+	feeshareante "github.com/furyahub/core/v2/x/feeshare/ante"
+	feesharekeeper "github.com/furyahub/core/v2/x/feeshare/keeper"
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmTypes "github.com/CosmWasm/wasmd/x/wasm/types"

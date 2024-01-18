@@ -8,13 +8,13 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	custombankkeeper "github.com/terra-money/alliance/custom/bank/keeper"
-	customterratypes "github.com/terra-money/core/v2/custom/bank/types"
+	custombankkeeper "github.com/furyahub/alliance/custom/bank/keeper"
+	customfuryatypes "github.com/furyahub/core/v2/custom/bank/types"
 )
 
 type Keeper struct {
 	custombankkeeper.Keeper
-	hooks customterratypes.BankHooks
+	hooks customfuryatypes.BankHooks
 	ak    accountkeeper.AccountKeeper
 }
 
@@ -37,7 +37,7 @@ func NewBaseKeeper(
 }
 
 // Set the bank hooks
-func (k *Keeper) SetHooks(bh customterratypes.BankHooks) *Keeper {
+func (k *Keeper) SetHooks(bh customfuryatypes.BankHooks) *Keeper {
 	if k.hooks != nil {
 		panic("cannot set bank hooks twice")
 	}

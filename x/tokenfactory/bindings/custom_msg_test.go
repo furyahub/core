@@ -11,9 +11,9 @@ import (
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/terra-money/core/v2/app"
-	bindings "github.com/terra-money/core/v2/x/tokenfactory/bindings/types"
-	"github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/app"
+	bindings "github.com/furyahub/core/v2/x/tokenfactory/bindings/types"
+	"github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
 func TestCreateDenomMsg(t *testing.T) {
@@ -430,7 +430,7 @@ type ReflectSubMsgs struct {
 	Msgs []wasmvmtypes.SubMsg `json:"msgs"`
 }
 
-func executeCustom(t *testing.T, ctx sdk.Context, app *app.TerraApp, contract sdk.AccAddress, sender sdk.AccAddress, msg bindings.TokenMsg, funds sdk.Coin) error {
+func executeCustom(t *testing.T, ctx sdk.Context, app *app.FuryaApp, contract sdk.AccAddress, sender sdk.AccAddress, msg bindings.TokenMsg, funds sdk.Coin) error {
 	t.Helper()
 	wrapped := bindings.TokenFactoryMsg{
 		Token: &msg,

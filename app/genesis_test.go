@@ -6,13 +6,13 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/terra-money/core/v2/app"
+	"github.com/furyahub/core/v2/app"
 )
 
 func TestGenesis(t *testing.T) {
 	encCfg := app.MakeEncodingConfig()
 	genesisState := app.NewDefaultGenesisState(encCfg.Marshaler)
-	genesisState.ConfigureBondDenom(encCfg.Marshaler, "uluna")
+	genesisState.ConfigureBondDenom(encCfg.Marshaler, "ufury")
 	genesisState.ConfigureICA(encCfg.Marshaler)
 
 	jsonGenState, err := json.Marshal(genesisState)
@@ -62,11 +62,11 @@ func TestGenesis(t *testing.T) {
 				"max_bundle_size": 2,
 				"escrow_account_address": "32sHF2qbF8xMmvwle9QEcy59Cbc=",
 				"reserve_fee": {
-					"denom": "uluna",
+					"denom": "ufury",
 					"amount": "1"
 				},
 				"min_bid_increment": {
-					"denom": "uluna",
+					"denom": "ufury",
 					"amount": "1"
 				},
 				"front_running_protection": true,
@@ -80,7 +80,7 @@ func TestGenesis(t *testing.T) {
 		"consensus": null,
 		"crisis": {
 			"constant_fee": {
-				"denom": "uluna",
+				"denom": "ufury",
 				"amount": "1000"
 			}
 		},
@@ -138,7 +138,7 @@ func TestGenesis(t *testing.T) {
 			"params": {
 				"min_deposit": [
 					{
-						"denom": "uluna",
+						"denom": "ufury",
 						"amount": "10000000"
 					}
 				],
@@ -240,7 +240,7 @@ func TestGenesis(t *testing.T) {
 				"annual_provisions": "0.000000000000000000"
 			},
 			"params": {
-				"mint_denom": "uluna",
+				"mint_denom": "ufury",
 				"inflation_rate_change": "0.130000000000000000",
 				"inflation_max": "0.200000000000000000",
 				"inflation_min": "0.070000000000000000",
@@ -272,7 +272,7 @@ func TestGenesis(t *testing.T) {
 				"max_validators": 100,
 				"max_entries": 7,
 				"historical_entries": 10000,
-				"bond_denom": "uluna",
+				"bond_denom": "ufury",
 				"min_commission_rate": "0.000000000000000000"
 			},
 			"last_total_power": "0",
@@ -287,7 +287,7 @@ func TestGenesis(t *testing.T) {
 			"params": {
 				"denom_creation_fee": [
 					{
-						"denom": "uluna",
+						"denom": "ufury",
 						"amount": "10000000"
 					}
 				],

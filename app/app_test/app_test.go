@@ -14,10 +14,10 @@ import (
 	ibcfee "github.com/cosmos/ibc-go/v7/modules/apps/29-fee"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/terra-money/alliance/x/alliance"
-	"github.com/terra-money/core/v2/app/wasmconfig"
-	"github.com/terra-money/core/v2/x/feeshare"
-	"github.com/terra-money/core/v2/x/tokenfactory"
+	"github.com/furyahub/alliance/x/alliance"
+	"github.com/furyahub/core/v2/app/wasmconfig"
+	"github.com/furyahub/core/v2/x/feeshare"
+	"github.com/furyahub/core/v2/x/tokenfactory"
 
 	tmtypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -51,7 +51,7 @@ import (
 	ibc "github.com/cosmos/ibc-go/v7/modules/core"
 
 	"github.com/CosmWasm/wasmd/x/wasm"
-	terra_app "github.com/terra-money/core/v2/app"
+	furya_app "github.com/furyahub/core/v2/app"
 )
 
 var (
@@ -70,11 +70,11 @@ var (
 )
 
 func TestSimAppExportAndBlockedAddrs(t *testing.T) {
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	db := dbm.NewMemDB()
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0, encCfg,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0, encCfg,
 		simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 
 	// generate validator private/public key
@@ -108,9 +108,9 @@ func TestSimAppExportAndBlockedAddrs(t *testing.T) {
 	app.Commit()
 
 	// Making a new app object with the db, so that initchain hasn't been called
-	app2 := terra_app.NewTerraApp(
+	app2 := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0,
 		encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 	_, err = app2.ExportAppStateAndValidators(false, []string{}, []string{})
 	require.NoError(t, err, "ExportAppStateAndValidators should not have an error")
@@ -118,11 +118,11 @@ func TestSimAppExportAndBlockedAddrs(t *testing.T) {
 
 func TestInitGenesisOnMigration(t *testing.T) {
 	db := dbm.NewMemDB()
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	logger := log.NewTMLogger(log.NewSyncWriter(os.Stdout))
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		logger, db, nil, true, map[int64]bool{},
-		terra_app.DefaultNodeHome, 0, encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
+		furya_app.DefaultNodeHome, 0, encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 
 	ctx := app.NewContext(true, tmproto.Header{Height: app.LastBlockHeight()})
 
@@ -205,44 +205,44 @@ func TestInitGenesisOnMigration(t *testing.T) {
 }
 
 func TestLegacyAmino(t *testing.T) {
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	db := dbm.NewMemDB()
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0,
 		encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 
 	require.Equal(t, encCfg.Amino, app.LegacyAmino())
 }
 
 func TestAppCodec(t *testing.T) {
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	db := dbm.NewMemDB()
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0,
 		encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 
 	require.Equal(t, encCfg.Marshaler, app.AppCodec())
 }
 
 func TestInterfaceRegistry(t *testing.T) {
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	db := dbm.NewMemDB()
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0,
 		encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 
 	require.Equal(t, encCfg.InterfaceRegistry, app.InterfaceRegistry())
 }
 
 func TestGetKey(t *testing.T) {
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	db := dbm.NewMemDB()
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0,
 		encCfg, simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig())
 
 	require.NotEmpty(t, app.GetKey(banktypes.StoreKey))
@@ -251,11 +251,11 @@ func TestGetKey(t *testing.T) {
 }
 
 func TestSimAppEnforceStakingForVestingTokens(t *testing.T) {
-	encCfg := terra_app.MakeEncodingConfig()
+	encCfg := furya_app.MakeEncodingConfig()
 	db := dbm.NewMemDB()
-	app := terra_app.NewTerraApp(
+	app := furya_app.NewFuryaApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
-		db, nil, true, map[int64]bool{}, terra_app.DefaultNodeHome, 0, encCfg,
+		db, nil, true, map[int64]bool{}, furya_app.DefaultNodeHome, 0, encCfg,
 		simtestutil.EmptyAppOptions{}, wasmconfig.DefaultConfig(),
 	)
 	genAccounts := authtypes.GenesisAccounts{

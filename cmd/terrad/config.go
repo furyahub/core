@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/terra-money/core/v2/app/wasmconfig"
+	"github.com/furyahub/core/v2/app/wasmconfig"
 
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 )
 
-// TerraAppConfig terra specify app config
-type TerraAppConfig struct {
+// FuryaAppConfig furya specify app config
+type FuryaAppConfig struct {
 	serverconfig.Config
 
 	WASMConfig wasmconfig.Config `mapstructure:"wasm"`
@@ -32,18 +32,18 @@ func initAppConfig() (string, interface{}) {
 	//   own app.toml to override, or use this default value.
 	//
 	// In simapp, we set the min gas prices to 0.
-	srvCfg.MinGasPrices = "0uluna"
+	srvCfg.MinGasPrices = "0ufury"
 	srvCfg.API.Enable = true
 	srvCfg.API.Swagger = true
 
-	srvCfg.Rosetta.DenomToSuggest = "uluna"
+	srvCfg.Rosetta.DenomToSuggest = "ufury"
 
-	terraAppConfig := TerraAppConfig{
+	furyaAppConfig := FuryaAppConfig{
 		Config:     *srvCfg,
 		WASMConfig: *wasmconfig.DefaultConfig(),
 	}
 
-	terraAppTemplate := serverconfig.DefaultConfigTemplate + wasmconfig.DefaultConfigTemplate
+	furyaAppTemplate := serverconfig.DefaultConfigTemplate + wasmconfig.DefaultConfigTemplate
 
-	return terraAppTemplate, terraAppConfig
+	return furyaAppTemplate, furyaAppConfig
 }

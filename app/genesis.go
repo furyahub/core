@@ -15,8 +15,8 @@ import (
 	icahosttypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/host/types"
 	icatypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/types"
 	buildertypes "github.com/skip-mev/pob/x/builder/types"
-	"github.com/terra-money/core/v2/app/config"
-	tokenfactorytypes "github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/app/config"
+	tokenfactorytypes "github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
 // GenesisState - The genesis state of the blockchain is represented here as a map of raw json

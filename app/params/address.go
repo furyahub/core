@@ -3,7 +3,7 @@ package params
 import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/terra-money/core/v2/app/config"
+	"github.com/furyahub/core/v2/app/config"
 )
 
 func RegisterAddressesConfig() *sdk.Config {

@@ -2,11 +2,11 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	customterratypes "github.com/terra-money/core/v2/custom/bank/types"
+	customfuryatypes "github.com/furyahub/core/v2/custom/bank/types"
 )
 
 // Implements StakingHooks interface
-var _ customterratypes.BankHooks = Keeper{}
+var _ customfuryatypes.BankHooks = Keeper{}
 
 // TrackBeforeSend executes the TrackBeforeSend hook if registered.
 func (k Keeper) TrackBeforeSend(ctx sdk.Context, from, to sdk.AccAddress, amount sdk.Coins) {
@@ -24,10 +24,10 @@ func (k Keeper) BlockBeforeSend(ctx sdk.Context, from, to sdk.AccAddress, amount
 }
 
 // MultiBankHooks combine multiple bank hooks, all hook functions are run in array sequence
-type MultiBankHooks []customterratypes.BankHooks
+type MultiBankHooks []customfuryatypes.BankHooks
 
 // NewMultiBankHooks takes a list of BankHooks and returns a MultiBankHooks
-func NewMultiBankHooks(hooks ...customterratypes.BankHooks) MultiBankHooks {
+func NewMultiBankHooks(hooks ...customfuryatypes.BankHooks) MultiBankHooks {
 	return hooks
 }
 

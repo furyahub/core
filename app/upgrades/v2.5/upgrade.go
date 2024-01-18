@@ -55,7 +55,7 @@ func CreateUpgradeHandler(
 		params.AllowedClients = append(params.AllowedClients, ibcexported.Localhost)
 		clientKeeper.SetParams(ctx, params)
 
-		// READ: https://github.com/terra-money/core/issues/166
+		// READ: https://github.com/furyahub/core/issues/166
 		icacontrollerKeeper.SetParams(ctx, icacontrollertypes.DefaultParams())
 		vm, err := mm.RunMigrations(ctx, cfg, fromVM)
 		if err != nil {
@@ -69,8 +69,8 @@ func CreateUpgradeHandler(
 		err = pobKeeper.SetParams(ctx, pobtypes.Params{
 			MaxBundleSize:          0,
 			EscrowAccountAddress:   pobtypes.DefaultEscrowAccountAddress,
-			ReserveFee:             sdk.NewCoin("uluna", sdk.NewInt(1)),
-			MinBidIncrement:        sdk.NewCoin("uluna", sdk.NewInt(1)),
+			ReserveFee:             sdk.NewCoin("ufury", sdk.NewInt(1)),
+			MinBidIncrement:        sdk.NewCoin("ufury", sdk.NewInt(1)),
 			FrontRunningProtection: pobtypes.DefaultFrontRunningProtection,
 			ProposerFee:            pobtypes.DefaultProposerFee,
 		})

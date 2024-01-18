@@ -7,8 +7,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	app "github.com/terra-money/core/v2/app/app_test"
-	"github.com/terra-money/core/v2/x/feeshare/types"
+	app "github.com/furyahub/core/v2/app/app_test"
+	"github.com/furyahub/core/v2/x/feeshare/types"
 )
 
 // BankKeeper defines the expected interface needed to retrieve account balances.

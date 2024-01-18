@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
-	"github.com/terra-money/core/v2/x/tokenfactory/types"
+	"github.com/furyahub/core/v2/x/tokenfactory/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

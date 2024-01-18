@@ -1,6 +1,6 @@
 package keeper_test
 
-import "github.com/terra-money/core/v2/x/tokenfactory/types"
+import "github.com/furyahub/core/v2/x/tokenfactory/types"
 
 func (s *KeeperTestSuite) TestQueryParams() {
 	params, err := s.App.TokenFactoryKeeper.Params(s.Ctx, &types.QueryParamsRequest{})

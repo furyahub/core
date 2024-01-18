@@ -15,8 +15,8 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 	pobtypes "github.com/skip-mev/pob/x/builder/types"
-	feesharekeeper "github.com/terra-money/core/v2/x/feeshare/keeper"
-	feesharetypes "github.com/terra-money/core/v2/x/feeshare/types"
+	feesharekeeper "github.com/furyahub/core/v2/x/feeshare/keeper"
+	feesharetypes "github.com/furyahub/core/v2/x/feeshare/types"
 )
 
 func CreateUpgradeHandler(

@@ -187,9 +187,9 @@ require (
 replace (
 	// This is a temporary fix since the latest version updated some function signatures. To remove when updating to cosmos 47
 	github.com/ChainSafe/go-schnorrkel => github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d
-	github.com/CosmWasm/wasmd => github.com/furyahub/wasmd v0.43.0-furya
-	github.com/cosmos/cosmos-sdk => github.com/furyahub/cosmos-sdk v0.47.5-furya.2
-	github.com/cosmos/ledger-cosmos-go => github.com/furyahub/ledger-furya-go v0.11.2
+	github.com/CosmWasm/wasmd => github.com/terra-money/wasmd v0.43.0-terra
+	github.com/cosmos/cosmos-sdk => github.com/terra-money/cosmos-sdk v0.47.5-terra.2
+	github.com/cosmos/ledger-cosmos-go => github.com/terra-money/ledger-terra-go v0.11.2
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )
